@@ -31,7 +31,7 @@ export default function TabLayout() {
       < Ionicons name={focused ? 'code-outline' : 'code-slash-outline'} color={color} size ={24}/>) //icone
     }}/>
 
-    <Tabs.Screen name = "toDoList" options={{ title: 'Lista de Tarefas', 
+    <Tabs.Screen name = "toDoList" options={{ title: 'Lista de Projetos', 
       tabBarIcon:({color, focused})=> (
       < Ionicons name={focused ? 'list-circle-outline' : 'list-circle-sharp'} color={color} size ={24}/>) //icone
     }}/>

@@ -16,7 +16,7 @@ export default function App() {
     <View style = {chuchu.inputContainer}>
         <TextInput
             style={chuchu.input}
-            placeholder="Adicione uma tarefa: "
+            placeholder="Adicione um novo projeto: "
             value={novaTarefa}
             onChangeText={setNovaTarefa}
         />
