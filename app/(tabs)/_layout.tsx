@@ -35,6 +35,11 @@ export default function TabLayout() {
       tabBarIcon:({color, focused})=> (
       < Ionicons name={focused ? 'list-circle-outline' : 'list-circle-sharp'} color={color} size ={24}/>) //icone
     }}/>
+
+    <Tabs.Screen name = "buscarLivros" options={{ title: 'Busca de Livros', 
+      tabBarIcon:({color, focused})=> (
+      < Ionicons name={focused ? 'book-outline' : 'book'} color={color} size ={24}/>) //icone
+    }}/>
   </Tabs>
   
     );
