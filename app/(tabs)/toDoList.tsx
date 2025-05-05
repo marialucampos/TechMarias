@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TextInput,Button,FlatList,TouchableOpacity, StyleSheet} from 'react-native';
-import {useTarefa} from '../hooks/useTarefas';
+import {useTarefa} from '../../hooks/useTarefas';
 import {Link} from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 

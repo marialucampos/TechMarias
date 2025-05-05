@@ -1,31 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, Image, Alert, Linking } from 'react-native';
+import React from 'react';
+import { View, Text, TextInput, Button, FlatList, StyleSheet, Image, Linking } from 'react-native';
+import { useBuscarLivros } from '@/hooks/useBuscarLivros';
+
+
 
 export default function App() {
-  const [busca, setBusca] = useState('');
-  const [resultados, setResultados] = useState<any[]>([]);
+  const { busca, setBusca, resultados, buscarLivros } = useBuscarLivros();
 
-  async function buscarLivros() {
-    if (busca.trim() === ' ') {
-      Alert.alert('Erro', 'Digite um termo para buscar.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(busca)}`);
-      const data = await response.json();
-      setResultados(data.items || []);
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Erro', 'Não foi possível buscar os livros.');
-    }
-  }
-
-  function renderResultado({ item }: { item: any }) {
+  const renderResultado = ({ item }: { item: any }) => {
     const volumeInfo = item.volumeInfo || {};
+    const imageUrl = volumeInfo.imageLinks?.thumbnail;
 
     return (
       <View style={styles.resultado}>
+        <View style={styles.imageContainer}>
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <View style={styles.placeholderImage} />
+          )}
+        </View>
         <View style={{ flex: 1 }}>
           <Text
             style={styles.link}
@@ -39,20 +33,19 @@ export default function App() {
         </View>
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Buscar Livros</Text>
       <TextInput
         style={styles.textinput}
-        placeholder="Digite o nome do livro da sua area"
+        placeholder="Digite o nome de um livro, ex: Java for Students..."
         value={busca}
         onChangeText={setBusca}
-    
+        placeholderTextColor="#A9A9A9"
       />
       <Button title="Buscar" onPress={buscarLivros} color="#4B0082" />
-
       <FlatList
         data={resultados}
         renderItem={renderResultado}
@@ -78,40 +71,48 @@ const styles = StyleSheet.create({
   },
   textinput: {
     borderWidth: 1,
-    borderColor: '#4B0082',
+    borderColor: '#C0C0C0',
     borderRadius: 10,
     padding: 12,
     width: '100%',
     marginBottom: 15,
     fontSize: 16,
-    backgroundColor: '#E6E6FA',
-    
+    color: '#4B0082',
+    backgroundColor: '#F5F5F5',
   },
   resultados: {
     marginTop: 20,
   },
   resultado: {
-    backgroundColor: '#E6E6FA',
+    backgroundColor: '#FFF',
     borderRadius: 12,
     padding: 15,
     marginBottom: 15,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    elevation: 3,
     flexDirection: 'row',
     alignItems: 'center',
-    
+    elevation: 2,
+  },
+  imageContainer: {
+    width: 80,
+    height: 120,
+    marginRight: 15,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+  placeholderImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#d3d3d3',
+    borderRadius: 8,
   },
   link: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#4B0082',
     marginBottom: 5,
-  },
-  button:{
-    backgroundColor:'#4B0082'
   },
   snippet: {
     fontSize: 14,
