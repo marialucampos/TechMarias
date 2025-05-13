@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
     color: '#4B0082',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#E6E6FA',
   },
   resultados: {
     marginTop: 20,
