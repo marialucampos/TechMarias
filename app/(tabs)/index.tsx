@@ -10,6 +10,8 @@ import CircleButton from '@/app/components/CircleButton';
 import EmojiPicker from '@/app/components/EmojiPicker';
 import EmojiList from "@/app/components/EmojiList";
 import EmojiSticker from "@/app/components/EmojiSticker";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 
 
@@ -54,7 +56,7 @@ export default function Index() {
   };
 
   return (
-    <View style={xuxu.container}>
+    <GestureHandlerRootView style={xuxu.container}>
       <View style={xuxu.imageContainer}>
         <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
         {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
@@ -70,14 +72,14 @@ export default function Index() {
       ) : (
         <View style={xuxu.footerContainer}>
           <Button theme="primary" label="Escolha a foto" onPress={pickImageAsync} />
-          <Button label="Use esta foto" onPress={() => setShowAppOptions(true)} />
+          <Button label="Adicione um emoji" onPress={() => setShowAppOptions(true)} />
         </View>
       )}
       <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
         <EmojiList onSelect ={setPickedEmoji} onCloseModal={(onModalClose)}/>
       </EmojiPicker>
 
-    </View>
+    </GestureHandlerRootView>
   );
 
 }
