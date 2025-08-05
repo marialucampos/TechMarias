@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ImageSourcePropType} from "react-native";
+import { Text, View, StyleSheet, ImageSourcePropType, Platform} from "react-native";
 import { Link } from 'expo-router';
 import { Image } from 'expo-image';
 import ImageViewer from '@/app/components/ImageViewer';
@@ -13,6 +13,8 @@ import EmojiSticker from "@/app/components/EmojiSticker";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as mediaLibrary from 'expo-media-library';
 import {captureRef} from 'react-native-view-shot';
+import { toJpeg } from 'html-to-image';
+
 
 
 const PlaceholderImage = require('@/assets/images/mulher2.png');
@@ -59,18 +61,40 @@ export default function Index() {
   };
 
   const onSaveImageAsync = async () => {
-    try {
+    if (Platform.OS === 'web') {
+      const domNode = imageRef.current as unknown as HTMLElement;
+
+      if (!domNode) {
+        alert("Imagem ainda não carregada.");
+        return;
+      }
+
+      try {
+        const dataUrl = await toJpeg(domNode, {
+          quality: 0.95,
+          backgroundColor: '#fff', // Garante fundo branco
+        });
+
+        const link = document.createElement('a');
+        link.download = 'TechMarias-sticker.jpeg';
+        link.href = dataUrl;
+        link.click();
+      } catch (err) {
+        console.log('Erro ao gerar imagem:', err);
+      }
+
+    } else {
+      try {
         const localUri = await captureRef(imageRef, {
-            height: 440,
-            quality: 1,
+          height: 440,
+          quality: 1,
         });
 
         await mediaLibrary.saveToLibraryAsync(localUri);
-        if (localUri) {
-            alert('Saved!');
-        }
-    } catch (e) {
-        console.log(e);
+        alert('Imagem salva na galeria!');
+      } catch (e) {
+        console.log('Erro ao salvar no mobile:', e);
+      }
     }
   };
 
